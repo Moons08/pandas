@@ -1195,17 +1195,39 @@ class Index(IndexOpsMixin, PandasObject):
     def rename(self, name, inplace=False):
         """
         Set new names on index. Defaults to returning new index.
+        Length of names must match number of levels in MultiIndex.
 
         Parameters
         ----------
-        name : str or list
-            name to set
+        name : str or sequence
+            name(s) to set
         inplace : bool
             if True, mutates in place
 
         Returns
         -------
         new index (of same type and class...etc) [if inplace, returns None]
+
+        Examples
+        -------
+        >>> idx = Index([1, 2, 3, 4], name = 'foo')
+        Int64Index([1, 2, 3, 4], dtype='int64', name='foo')
+        >>> idx.rename('bar')
+        Int64Index([1, 2, 3, 4], dtype='int64', name='bar')
+        >>> idx = MultiIndex.from_tuples([(1, u'one'), (1, u'two'),
+                                          (2, u'one'), (2, u'two')],
+                                          names=['foo', 'bar'])
+        >>> idx.rename(['bar', None], inplace=True)
+        >>> idx
+        MultiIndex(levels=[[1, 2], ['one', 'two']],
+                   labels=[[0, 0, 1, 1], [0, 1, 0, 1]],
+                   names=['bar', None])
+        >>> idx.rename(['bar'])
+        This will raise an error
+
+        See also
+        --------
+        set_names : able to set new names partially and by level
         """
         return self.set_names([name], inplace=inplace)
 
