@@ -1223,7 +1223,7 @@ class Index(IndexOpsMixin, PandasObject):
                    labels=[[0, 0, 1, 1], [0, 1, 0, 1]],
                    names=['bar', None])
         >>> idx.rename(['bar'])
-        This will raise an error
+        ValueError: Length of names must match number of levels in MultiIndex.
 
         See also
         --------
